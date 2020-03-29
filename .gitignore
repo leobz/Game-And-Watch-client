@@ -1,0 +1,9 @@
+.project
+.cproject
+.externalToolBuilders/
+.settings/
+tp0.config
+tp0.log
+tp0
+tp0.o
+utils.o

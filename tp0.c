@@ -20,9 +20,13 @@ int main(void)
 	logger = iniciar_logger();
 
 	//Loggear "soy un log"
+	log_info(logger, "Soy un cacahuate!...digo, un Log!");
 
 	config = leer_config();
+	ip     = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config, "PUERTO");
 
+	log_info(logger, "Configuracion> PUERTO:%s - IP:%s", puerto, ip);
 
 	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
 
@@ -42,17 +46,19 @@ int main(void)
 //TODO
 t_log* iniciar_logger(void)
 {
-
+	return log_create("tp0.log", "tp0" , 1, LOG_LEVEL_INFO);
 }
 
 //TODO
 t_config* leer_config(void)
 {
-
+	return config_create("tp0.config");
 }
 
 //TODO
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+	log_destroy(logger);
+	config_destroy(config);
 }
