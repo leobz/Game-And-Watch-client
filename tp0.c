@@ -6,6 +6,7 @@
  */
 
 #include "tp0.h"
+#include "utils.h"
 
 int main(void)
 {
@@ -33,9 +34,10 @@ int main(void)
 	//antes de continuar, tenemos que asegurarnos que el servidor esté corriendo porque lo necesitaremos para lo que sigue.
 
 	//crear conexion
+	int socket_cliente = crear_conexion(ip, puerto);
 
 	//enviar mensaje
-
+	enviar_mensaje("Hola, soy un cliente!", socket_cliente);
 	//recibir mensaje
 
 	//loguear mensaje recibido
