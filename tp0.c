@@ -6,9 +6,9 @@
  */
 
 #include "tp0.h"
+#include "utils.h"
 
-int main(void)
-{
+int main(void) {
 	/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
 	int conexion;
 	char* ip;
@@ -19,40 +19,42 @@ int main(void)
 
 	logger = iniciar_logger();
 
-	//Loggear "soy un log"
+	log_info(logger, "Soy un log");
 
 	config = leer_config();
+	ip = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config, "PUERTO");
 
+	log_info(logger, "Configuracion > PUERTO:%s - IP:%s", puerto, ip);
 
 	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
 
-	//antes de continuar, tenemos que asegurarnos que el servidor esté corriendo porque lo necesitaremos para lo que sigue.
+	// Crear conexion.
+	conexion = crear_conexion(ip, puerto);
 
-	//crear conexion
+	// Enviar mensaje.
+	enviar_mensaje("dattebayo!", conexion);
 
-	//enviar mensaje
+	// Recibir mensaje.
+	char* mensaje_recibido = recibir_mensaje(conexion);
 
-	//recibir mensaje
+	// Loguear mensaje recibido
+	log_info(logger, "Mensaje recibido: %s", mensaje_recibido);
 
-	//loguear mensaje recibido
-
+	free(mensaje_recibido);
 	terminar_programa(conexion, logger, config);
 }
 
-//TODO
-t_log* iniciar_logger(void)
-{
-
+t_log* iniciar_logger(void) {
+	return log_create("tp0.log", "tp0", 1, LOG_LEVEL_INFO);
 }
 
-//TODO
-t_config* leer_config(void)
-{
-
+t_config* leer_config(void) {
+	return config_create("tp0.config");
 }
 
-//TODO
-void terminar_programa(int conexion, t_log* logger, t_config* config)
-{
-	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+void terminar_programa(int conexion, t_log* logger, t_config* config) {
+	liberar_conexion(conexion);
+	log_destroy(logger);
+	config_destroy(config);
 }
